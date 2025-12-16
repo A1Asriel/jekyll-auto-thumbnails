@@ -68,7 +68,7 @@ module JekyllAutoThumbnails
 
       # Replace URLs in HTML
       (site.documents + site.pages).each do |doc|
-        next unless doc.output
+        next unless doc.output and (doc.extname == ".html" or doc.extname == ".md")
 
         doc.output = replace_urls(doc.output, url_map)
       end
