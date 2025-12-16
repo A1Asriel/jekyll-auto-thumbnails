@@ -124,6 +124,8 @@ module JekyllAutoThumbnails
     def self.parse_dimension(value)
       return nil if value.nil? || value.empty?
 
+      # If the value is a relative unit, return nil
+      return nil if value.end_with?("%", "vw", "vh", "rem", "em", "ex", "ch", "vmin", "vmax")
       # Strip non-numeric characters (e.g., "300px" -> 300)
       numeric = value.to_s.gsub(/[^\d]/, "")
       return nil if numeric.empty?
