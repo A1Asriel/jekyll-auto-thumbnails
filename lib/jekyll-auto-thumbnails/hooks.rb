@@ -33,9 +33,9 @@ module JekyllAutoThumbnails
         return
       end
 
-      # Scan all documents and pages
+      # Scan all documents and pages (ignore non-HTML or Markdown files)
       (site.documents + site.pages).each do |doc|
-        next unless doc.output
+        next unless doc.output and (doc.extname == "html" or doc.extname == "md")
 
         Scanner.scan_html(doc.output, registry, config, site.source)
       end
@@ -112,7 +112,7 @@ module JekyllAutoThumbnails
       # Return early if no replacements needed
       return html if url_map.empty?
 
-      doc = Nokogiri::HTML(html)
+      doc = Nokogiri::HTML5(html)
 
       doc.css("article img").each do |img|
         src = img["src"]
