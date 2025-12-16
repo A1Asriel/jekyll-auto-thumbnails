@@ -35,7 +35,7 @@ module JekyllAutoThumbnails
 
       # Scan all documents and pages (ignore non-HTML or Markdown files)
       (site.documents + site.pages).each do |doc|
-        next unless doc.output and (doc.extname == "html" or doc.extname == "md")
+        next unless doc.output and (doc.extname == ".html" or doc.extname == ".md")
 
         Scanner.scan_html(doc.output, registry, config, site.source)
       end
