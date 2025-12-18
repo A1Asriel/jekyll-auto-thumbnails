@@ -39,7 +39,7 @@ module JekyllAutoThumbnails
       # Build thumbnail filename
       basename = File.basename(source_path, File.extname(source_path))
       ext = File.extname(source_path)
-      thumb_filename = build_thumbnail_filename(basename, digest, width, height, ext)
+      thumb_filename = build_thumbnail_filename(basename+File.extname(source_path), digest, width, height, ".webp")
 
       # Check cache
       cached_path = File.join(@config.cache_dir, thumb_filename)
@@ -97,6 +97,9 @@ module JekyllAutoThumbnails
       if quality_needed?(ext)
         args << "-quality"
         args << @config.quality.to_s
+      else
+        args << "-quality"
+        args << "90"
       end
 
       args << dest_path
@@ -111,9 +114,9 @@ module JekyllAutoThumbnails
     # @param height [Integer, nil] target height
     # @return [String] geometry string (e.g., "400x300>")
     def build_geometry(width, height)
-      width_str = width || ""
-      height_str = height || ""
-      "#{width_str}x#{height_str}>"
+      width_str = width || "2"
+      height_str = height || "2"
+      "#{width_str}x#{height_str}^>"
     end
 
     # Check if quality parameter needed for image format
@@ -121,7 +124,7 @@ module JekyllAutoThumbnails
     # @param ext [String] file extension
     # @return [Boolean] true if quality parameter should be used
     def quality_needed?(ext)
-      %w[.jpg .jpeg].include?(ext.downcase)
+      %w[.jpg .jpeg .webp].include?(ext.downcase)
     end
   end
 end
